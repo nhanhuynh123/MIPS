@@ -1,6 +1,14 @@
 .data
-string_array: .asciiz "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"
-array_size: .word 10
+Zero: .asciiz "Zero "
+One: .asciiz "One "
+Two: .asciiz "Two "
+Three: .asciiz "Three "
+Four: .asciiz "Four "
+Five: .asciiz "Five "
+Six: .asciiz "Six "
+Seven: .asciiz "Seven "
+Eight: .asciiz "Eight "
+Nine: .asciiz "Nine "
 prompt: .asciiz "Nhap mot so nguyen duong: "
 error: .asciiz "invalid Entry "
 endl: .asciiz "\n"
@@ -19,6 +27,7 @@ la $s0, ($v0)
 #Kiem tra tinh nguyen duong
 blez $s0, error
 
+#Dao nguoc so
 addi $t2, $t2, 0
 loop:
 beqz $s0, end_loop
@@ -29,10 +38,74 @@ add $t2, $t2, $t1
 j loop
 end_loop:
 
-li $v0, 4
-la $a0, endl
-syscall
+#Chuyen so sang chu
+loop2:
+beqz $t2, end_loop2 #Neu 
+div $t2, $t2, 10
+mfhi $t1
+beqz $t1, zero
+beq $t1, 1, one
+beq $t1, 2, two
+beq $t1, 3, three
+beq $t1, 4, four
+beq $t1, 5, five
+beq $t1, 6, six
+beq $t1, 7, seven
+beq $t1, 8, eight
+beq $t1, 9, nine
 
-li $v0, 1
-la $a0, ($t2)
+zero: 
+li $v0, 4
+la $a0, Zero
+syscall
+j loop2
+one: 
+li $v0, 4
+la $a0, One
+syscall
+j loop2
+two: 
+li $v0, 4
+la $a0, Two
+syscall
+j loop2
+three: 
+li $v0, 4
+la $a0, Three
+syscall
+j loop2
+four: 
+li $v0, 4
+la $a0, Four
+syscall
+j loop2
+five: 
+li $v0, 4
+la $a0, Five
+syscall
+j loop2
+six: 
+li $v0, 4
+la $a0, Six
+syscall
+j loop2
+seven: 
+li $v0, 4
+la $a0, Seven
+syscall
+j loop2
+eight: 
+li $v0, 4
+la $a0, Eight
+syscall
+j loop2
+nine: 
+li $v0, 4
+la $a0, Nine
+syscall
+j loop2
+
+end_loop2:
+
+li $v0, 10
 syscall
