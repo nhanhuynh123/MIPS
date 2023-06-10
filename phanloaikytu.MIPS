@@ -6,10 +6,15 @@ CHoa: .asciiz "Ky tu nhap vao la chu hoa."
 CSo: .asciiz "Ky tu nhap vao la chu so."
 IType: .asciiz "Invalid type."
 endl: .asciiz "\n"
+res1: .asciiz "Ky tu lien truoc: "
+res2: .asciiz "Ky tu lien sau: "
+
+
+
 .text
 .globl main
 main:
-
+#Nhap ky tu
 li $v0, 4
 la $a0, prompt
 syscall
@@ -21,11 +26,43 @@ la $s1, ($v0)
 li $v0, 4
 la $a0, endl
 syscall
+#Xuat 
+addi $s2, $s1, -1
+addi $s3, $s1, 1
+
+
+#Xuat ky tu lien truoc
+li $v0, 4
+la $a0, res1
+syscall
+
+li $v0, 11
+la $a0, ($s2)
+syscall
+
+
+
+li $v0, 4
+la $a0, endl
+syscall
+
+#Xuat ky tu lien sau
+li $v0, 4
+la $a0, res2
+syscall
+
+li $v0, 11
+la $a0, ($s3)
+syscall
+
+li $v0, 4
+la $a0, endl
+syscall
 #Kiem tra chu thuong
 CT:
 sltiu $t0, $s1, 0x61 #So sanh voi ky tu 'a' phai tra ve 0
 sltiu $t1, $s1, 0x7b #So sanh voi ky tu 'z' phai tra ve 1
-beqz $t1, end
+beqz $t1, invalid
 beqz $t0, klct
 j CH
 klct:
@@ -37,8 +74,8 @@ j end
 #Kiem tra chu hoa
 CH:
 sltiu $t0, $s1, 0x41 #So sanh voi ky tu 'A' phai tra ve 0
-sltiu $t1, $s1, 0x5a #So sanh voi ky tu 'Z' phai tra ve 1
-beqz $t1, end
+sltiu $t1, $s1, 0x5b #So sanh voi ky tu 'Z' phai tra ve 1
+beqz $t1, invalid
 beqz $t0, klch
 j CS
 klch:
@@ -50,8 +87,8 @@ j end
 #Kiem tra chu so
 CS:
 sltiu $t0, $s1, 0x30 #So sanh voi ky tu '0' phai tra ve 0
-sltiu $t1, $s1, 0x39 #So sanh voi ky tu '9' phai tra ve 1
-beqz $t1, end
+sltiu $t1, $s1, 0x3a #So sanh voi ky tu '9' phai tra ve 1
+beqz $t1, invalid
 beqz $t0, klcs
 j invalid
 klcs:
@@ -61,7 +98,7 @@ syscall
 j end
 
 #Ko phai 3 loai tren
-invalid
+invalid:
 li $v0, 4
 la $a0, IType
 syscall
