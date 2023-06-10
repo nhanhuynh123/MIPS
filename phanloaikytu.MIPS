@@ -1,0 +1,74 @@
+.data
+
+prompt: .asciiz "Nhap 1 ky tu: "
+CThuong: .asciiz "Ky tu nhap vao la chu thuong. "
+CHoa: .asciiz "Ky tu nhap vao la chu hoa."
+CSo: .asciiz "Ky tu nhap vao la chu so."
+IType: .asciiz "Invalid type."
+endl: .asciiz "\n"
+.text
+.globl main
+main:
+
+li $v0, 4
+la $a0, prompt
+syscall
+
+li $v0, 12
+syscall
+la $s1, ($v0)
+
+li $v0, 4
+la $a0, endl
+syscall
+#Kiem tra chu thuong
+CT:
+sltiu $t0, $s1, 0x61 #So sanh voi ky tu 'a' phai tra ve 0
+sltiu $t1, $s1, 0x7b #So sanh voi ky tu 'z' phai tra ve 1
+beqz $t1, end
+beqz $t0, klct
+j CH
+klct:
+li $v0, 4
+la $a0, CThuong
+syscall
+j end
+
+#Kiem tra chu hoa
+CH:
+sltiu $t0, $s1, 0x41 #So sanh voi ky tu 'A' phai tra ve 0
+sltiu $t1, $s1, 0x5a #So sanh voi ky tu 'Z' phai tra ve 1
+beqz $t1, end
+beqz $t0, klch
+j CS
+klch:
+li $v0, 4
+la $a0, CHoa
+syscall
+j end
+
+#Kiem tra chu so
+CS:
+sltiu $t0, $s1, 0x30 #So sanh voi ky tu '0' phai tra ve 0
+sltiu $t1, $s1, 0x39 #So sanh voi ky tu '9' phai tra ve 1
+beqz $t1, end
+beqz $t0, klcs
+j invalid
+klcs:
+li $v0, 4
+la $a0, CSo
+syscall
+j end
+
+#Ko phai 3 loai tren
+invalid
+li $v0, 4
+la $a0, IType
+syscall
+j end
+
+end:
+li $v0, 10
+syscall
+
+
