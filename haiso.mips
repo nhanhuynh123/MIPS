@@ -1,0 +1,104 @@
+.data
+
+prompt1: .asciiz "Nhap so thu nhat: "
+prompt2: .asciiz "Nhap so thu hai: "
+res: .asciiz "So lon hon la: " 
+tong: .asciiz "Tong: "
+hieu: .asciiz "Hieu: "
+tich: .asciiz "Tich: "
+thuong: .asciiz "Thuong: "
+endl: .asciiz "\n"
+
+.text
+.globl main
+main:
+#Nhap so thu nhat
+li $v0, 4
+la $a0, prompt1
+syscall
+
+li $v0, 5
+syscall
+la $s1, ($v0)
+
+#Nhap so thu hai
+li $v0, 4
+la $a0, prompt2
+syscall
+
+li $v0, 5
+syscall
+la $s2, ($v0)
+
+#So sanh
+li $v0, 4
+la $a0, res
+syscall
+
+slt $s0, $s1, $s2 #s1<s2
+beqz $s0, s2
+
+li $v0, 1
+la $a0, ($s2)
+syscall
+j next
+s2:
+li $v0, 1
+la $a0, ($s1)
+syscall
+next:
+li $v0, 4
+la $a0, endl
+syscall
+#Tong
+li $v0, 4
+la $a0, tong
+syscall
+
+add $s3, $s1, $s2
+li $v0, 1
+la $a0, ($s3)
+syscall
+li $v0, 4
+la $a0, endl
+syscall
+#Hieu
+li $v0, 4
+la $a0, hieu
+syscall
+
+sub $s4, $s1, $s2
+li $v0, 1
+la $a0, ($s4)
+syscall
+li $v0, 4
+la $a0, endl
+syscall
+#Tich 
+li $v0, 4
+la $a0, tich
+syscall
+
+mul $s5, $s1, $s2
+li $v0, 1
+la $a0, ($s5)
+syscall
+li $v0, 4
+la $a0, endl
+syscall
+#Thuong
+li $v0, 4
+la $a0, thuong
+syscall
+
+div $s6, $s1, $s2
+li $v0, 1
+la $a0, ($s6)
+syscall
+li $v0, 4
+la $a0, endl
+syscall
+
+#Ket thuc
+li $v0, 10
+syscall
